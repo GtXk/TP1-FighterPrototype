@@ -24,6 +24,16 @@ public class Fighter : MonoBehaviourPun
         {
             return false;
         }
+        
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
+            currentHealth = maxHealth;
+
+
     }
     //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     //{
