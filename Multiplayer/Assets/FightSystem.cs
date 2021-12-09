@@ -156,4 +156,45 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
 
     }
+
+    IEnumerator PlayerOneHeal()
+    {
+        Player1Unit.Heal(5);
+
+        player1HUD.setHealth(Player1Unit.currentHealth);
+        dialogueText.text = "You feel renewed strength!";
+
+        yield return new WaitForSeconds(2f);
+
+        state = FightState.PLAYERTWOTURN;
+        StartCoroutine(PlayerTwoTurn());
+    }
+
+    IEnumerator PlayerTwoHeal()
+    {
+        Player2Unit.Heal(5);
+
+        player2HUD.setHealth(Player2Unit.currentHealth);
+        dialogueText.text = "You feel renewed strength!";
+
+        yield return new WaitForSeconds(2f);
+
+        state = FightState.PLAYERONETURN;
+        StartCoroutine(PlayerOneTurn());
+    }
+
+    public void onHealButton()
+    {
+        if (state != FightState.PLAYERONETURN)
+        {
+            photonView.RPC("test", RpcTarget.All);
+            // StartCoroutine(PlayerTwoHeal());
+        }
+        else
+        {
+            photonView.RPC("test2", RpcTarget.All);
+            // StartCoroutine(PlayerOneHeal());
+        }
+
+    }
 }
