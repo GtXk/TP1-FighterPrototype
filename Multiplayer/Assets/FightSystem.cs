@@ -124,22 +124,22 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         
         if (state != FightState.PLAYERONETURN)
         {
-            photonView.RPC("test", RpcTarget.All);
+            photonView.RPC("player2attack", RpcTarget.All);
            // StartCoroutine(PlayerTwoAttack());
         }
         else
         {
-            photonView.RPC("test2", RpcTarget.All);
+            photonView.RPC("player1attack", RpcTarget.All);
            // StartCoroutine(PlayerOneAttack());
         }
     }
     [PunRPC]
-    public void test()
+    public void player2attack()
     {
         StartCoroutine(PlayerTwoAttack());
     }
     [PunRPC]
-    public void test2()
+    public void player1attack()
     {
         StartCoroutine(PlayerOneAttack());
     }
@@ -155,5 +155,59 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
         }
 
+    }
+
+    IEnumerator PlayerOneHeal()
+    {
+        Player1Unit.Heal(5);
+
+        player1HUD.setHealth(Player1Unit.currentHealth);
+        MenuText.text = "You feel renewed strength!";
+
+        yield return new WaitForSeconds(2f);
+
+        
+        state = FightState.PLAYERTWOTURN;
+        PlayerTwoTurn();
+
+    }
+
+    IEnumerator PlayerTwoHeal()
+    {
+        Player2Unit.Heal(5);
+
+        player2HUD.setHealth(Player2Unit.currentHealth);
+        MenuText.text = "You feel renewed strength!";
+
+        yield return new WaitForSeconds(2f);
+
+        state = FightState.PLAYERONETURN;
+        PlayerOneTurn();
+
+    }
+
+    public void onHealButton()
+    {
+        if (state != FightState.PLAYERONETURN)
+        {
+            photonView.RPC("player2heal", RpcTarget.All);
+            // StartCoroutine(PlayerTwoHeal());
+        }
+        else
+        {
+            photonView.RPC("player1heal", RpcTarget.All);
+            // StartCoroutine(PlayerOneHeal());
+        }
+
+    }
+    [PunRPC]
+    public void player2heal()
+    {
+        StartCoroutine(PlayerTwoHeal());
+    }
+    [PunRPC]
+    public void player1heal()
+    {
+        StartCoroutine(PlayerOneHeal());
     }
 }
