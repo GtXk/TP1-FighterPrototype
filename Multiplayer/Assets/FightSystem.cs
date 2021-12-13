@@ -18,6 +18,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
     Fighter Player1Unit;
     Fighter Player2Unit;
+    public float rng;
 
     public Text MenuText;
 
@@ -53,10 +54,10 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         PlayerOneTurn();
     }
 
-    IEnumerator PlayerOneAttack()
+    IEnumerator PlayerOneLightAttack()
     {
   
-        bool isDead = Player2Unit.TakeDamage(Player1Unit.dmg);
+        bool isDead = Player2Unit.TakeDamage(5);
 
         player2HUD.setHealth(Player2Unit.currentHealth);
         MenuText.text = Player1Unit.FighterName + " attacks!";
@@ -75,9 +76,9 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    IEnumerator PlayerTwoAttack()
+    IEnumerator PlayerTwoLightAttack()
     {
-        bool isDead = Player1Unit.TakeDamage(Player2Unit.dmg);
+        bool isDead = Player1Unit.TakeDamage(5);
 
         player1HUD.setHealth(Player1Unit.currentHealth);
         MenuText.text = Player2Unit.FighterName + " attacks!";
@@ -91,6 +92,133 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
+            state = FightState.PLAYERONETURN;
+            PlayerOneTurn();
+        }
+    }
+    IEnumerator PlayerOneMediumAttack()
+    {
+        rng = Random.Range(1.0f, 100.0f);
+        if (rng <= 35)
+        {
+            bool isDead = Player2Unit.TakeDamage(10);
+
+            player2HUD.setHealth(Player2Unit.currentHealth);
+            MenuText.text = Player1Unit.FighterName + " attacks!";
+
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = FightState.WON;
+                ENDFight();
+            }
+            else
+            {
+                state = FightState.PLAYERTWOTURN;
+                PlayerTwoTurn();
+            }
+        }
+        else
+        {
+            MenuText.text = Player1Unit.FighterName + " missed!";
+            yield return new WaitForSeconds(2f);
+            state = FightState.PLAYERTWOTURN;
+            PlayerTwoTurn();
+        }
+    }
+    IEnumerator PlayerTwoMediumAttack()
+    {
+        rng = Random.Range(1.0f, 100.0f);
+        if (rng <= 35)
+        {
+
+            bool isDead = Player1Unit.TakeDamage(10);
+
+            player1HUD.setHealth(Player1Unit.currentHealth);
+            MenuText.text = Player2Unit.FighterName + " attacks!";
+
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = FightState.WON;
+                ENDFight();
+            }
+            else
+            {
+                state = FightState.PLAYERONETURN;
+                PlayerOneTurn();
+            }
+        }
+        else
+        {
+            MenuText.text = Player2Unit.FighterName + " missed!";
+            yield return new WaitForSeconds(2f);
+            state = FightState.PLAYERONETURN;
+            PlayerOneTurn();
+        }
+    }
+    IEnumerator PlayerOneHeavyAttack()
+    {
+
+        rng = Random.Range(1.0f, 100.0f);
+        if (rng <= 20)
+        {
+            bool isDead = Player2Unit.TakeDamage(15);
+
+            player2HUD.setHealth(Player2Unit.currentHealth);
+            MenuText.text = Player1Unit.FighterName + " attacks!";
+
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = FightState.WON;
+                ENDFight();
+            }
+            else
+            {
+                state = FightState.PLAYERTWOTURN;
+                PlayerTwoTurn();
+            }
+        }
+        else
+        {
+            MenuText.text = Player1Unit.FighterName + " missed!";
+            yield return new WaitForSeconds(2f);
+            state = FightState.PLAYERTWOTURN;
+            PlayerTwoTurn();
+        }
+    }
+    IEnumerator PlayerTwoHeavyAttack()
+    {
+        rng = Random.Range(1.0f, 100.0f);
+        if (rng <= 20)
+        {
+
+            bool isDead = Player1Unit.TakeDamage(15);
+
+            player1HUD.setHealth(Player1Unit.currentHealth);
+            MenuText.text = Player2Unit.FighterName + " attacks!";
+
+            yield return new WaitForSeconds(2f);
+
+            if (isDead)
+            {
+                state = FightState.WON;
+                ENDFight();
+            }
+            else
+            {
+                state = FightState.PLAYERONETURN;
+                PlayerOneTurn();
+            }
+        }
+        else
+        {
+            MenuText.text = Player2Unit.FighterName + " missed!";
+            yield return new WaitForSeconds(2f);
             state = FightState.PLAYERONETURN;
             PlayerOneTurn();
         }
@@ -119,29 +247,77 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         MenuText.text = "Fight! " + Player2Unit.FighterName;
     }
 
-    public void onAttackButton()
+    public void onLightAttackButton()
     {
         
         if (state != FightState.PLAYERONETURN)
         {
-            photonView.RPC("player2attack", RpcTarget.All);
-           // StartCoroutine(PlayerTwoAttack());
+            photonView.RPC("player2lightattack", RpcTarget.All);
+           
         }
         else
         {
-            photonView.RPC("player1attack", RpcTarget.All);
-           // StartCoroutine(PlayerOneAttack());
+            photonView.RPC("player1lightattack", RpcTarget.All);
+          
+        }
+    }
+    public void onMediumAttackButton()
+    {
+
+        if (state != FightState.PLAYERONETURN)
+        {
+            photonView.RPC("player2mediumattack", RpcTarget.All);
+           
+        }
+        else
+        {
+            photonView.RPC("player1mediumattack", RpcTarget.All);
+         
+        }
+    }
+    public void onHeavyAttackButton()
+    {
+
+        if (state != FightState.PLAYERONETURN)
+        {
+            photonView.RPC("player2heavyattack", RpcTarget.All);
+       
+        }
+        else
+        {
+            photonView.RPC("player1heavyattack", RpcTarget.All);
+            
         }
     }
     [PunRPC]
-    public void player2attack()
+    public void player2lightattack()
     {
-        StartCoroutine(PlayerTwoAttack());
+        StartCoroutine(PlayerTwoLightAttack());
     }
     [PunRPC]
-    public void player1attack()
+    public void player2mediumattack()
     {
-        StartCoroutine(PlayerOneAttack());
+        StartCoroutine(PlayerTwoMediumAttack());
+    }
+    [PunRPC]
+    public void player2heavyattack()
+    {
+        StartCoroutine(PlayerTwoHeavyAttack());
+    }
+    [PunRPC]
+    public void player1lightattack()
+    {
+        StartCoroutine(PlayerOneLightAttack());
+    }
+    [PunRPC]
+    public void player1mediumattack()
+    {
+        StartCoroutine(PlayerOneMediumAttack());
+    }
+    [PunRPC]
+    public void player1heavyattack()
+    {
+        StartCoroutine(PlayerOneHeavyAttack());
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
