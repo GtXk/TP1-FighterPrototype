@@ -42,6 +42,14 @@ MonoBehaviour:
   - test
   - healthchange
   - test2
+  - player1heal
+  - player1heavyattack
+  - player1lightattack
+  - player1mediumattack
+  - player2heal
+  - player2heavyattack
+  - player2lightattack
+  - player2mediumattack
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
