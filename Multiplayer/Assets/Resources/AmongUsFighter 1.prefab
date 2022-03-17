@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4177022771577042122}
   - component: {fileID: 8205196330594060007}
   m_Layer: 5
-  m_Name: PlayerFighter
+  m_Name: AmongUsFighter 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_SortingLayerID: -735233189
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: edb7e66b1770a2a4db31a5dfe8e93f22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a859f5024583039428e2c01852035144, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,7 +117,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4177022771577042123}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: bc55bbecb24390347a9b75ab69d7b30a, type: 2}
   m_CullingMode: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNum: 0
-  FighterName: Harry
+  FighterName: John
   playerName: ffff
   dmg: 4
   maxHealth: 100

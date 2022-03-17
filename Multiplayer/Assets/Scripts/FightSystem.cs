@@ -13,6 +13,8 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     public Fighter player1Prefab;
     public Fighter player2Prefab;
     public GameObject player3Prefab;
+    public GameObject player1Character;
+    public GameObject player2Character;
 
     public Fighter Lol;
 
@@ -39,7 +41,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
-        OnJoinedRoom(player3Prefab);
+        OnJoinedRoom(player1Character,player2Character);
         //GameObject Player3Ready = PhotonNetwork.Instantiate(player3Prefab, new Vector3(173f, 213f, 0f), Quaternion.identity);
         //Player1Unit = Player3Ready.GetComponent<Fighter>();
 
@@ -64,6 +66,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         if (numberPlayers != 2 && GameStart == true)
         {
             state = FightState.WON;
+            ENDFight();
         }
         
     }
@@ -91,7 +94,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.Instantiate(myPlayer.name, position, Quaternion.identity);
     }
 
-    public void OnJoinedRoom(GameObject myPlayer)
+    public void OnJoinedRoom(GameObject myPlayer, GameObject myPlayer2)
     {
         int totalPlayers = PhotonNetwork.PlayerList.Length;
         if (totalPlayers == 1)
@@ -100,7 +103,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
         if(totalPlayers == 2)
         {
-            SpawnPlayers(myPlayer,player2FightPosition.position);
+            SpawnPlayers(myPlayer2,player2FightPosition.position);
         }
     }
 
