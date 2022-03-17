@@ -50,6 +50,10 @@ MonoBehaviour:
   - player2heavyattack
   - player2lightattack
   - player2mediumattack
+  - P1StateChanger
+  - P2StateChanger
+  - playerAttack
+  - StateChanger
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
