@@ -150,7 +150,14 @@ public class Fighter : MonoBehaviourPun
 
     public void manaUsed(Attack anyAttack)
     {
-      
+        if (anyAttack.getType() == "Basic")
+        {
+            if (currentMana < maxMana)
+            {
+                currentMana -= anyAttack.getMana();
+            }
+        }
+        else
         {
             currentMana -= anyAttack.getMana();
         }
