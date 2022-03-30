@@ -1616,7 +1616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -414, y: 116}
+  m_AnchoredPosition: {x: -420, y: 207}
   m_SizeDelta: {x: 172.9965, y: 177.7059}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &532184958
@@ -1876,10 +1876,6 @@ MonoBehaviour:
   ChosenCharacter: 0
   ChosenCharacter2: 0
   rng: 0
-  player1health: {fileID: 484586279}
-  player2health: {fileID: 236826627}
-  player1mana: {fileID: 377759611}
-  player2mana: {fileID: 999077632}
   selectedItem: 0
   selectedItem2: 0
   player1FightPosition: {fileID: 511049582}
@@ -2973,7 +2969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 799, y: 88}
+  m_AnchoredPosition: {x: 805, y: 189}
   m_SizeDelta: {x: 137.6756, y: 142.3851}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1192898536
@@ -4299,8 +4295,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -3.1999998}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 4.0668, y: 2.4935}
+  m_SizeDelta: {x: 8.1335, y: 11.3871}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1762853567
 GameObject:
@@ -4337,8 +4333,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.6087036, y: 2.1212997}
-  m_SizeDelta: {x: 24.8108, y: 4.2427}
+  m_AnchoredPosition: {x: -4.6087036, y: 6.1882}
+  m_SizeDelta: {x: 24.8108, y: 12.3764}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1762853569
 MonoBehaviour:

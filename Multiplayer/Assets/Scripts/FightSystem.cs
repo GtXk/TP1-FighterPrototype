@@ -190,6 +190,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debug.Log("Heal path");
                 attacker.Heal(attacker.figherAttackSet.getAttack(attackID));
+                attacker.manaUsed(attacker.figherAttackSet.getAttack(attackID));
                 string animToplay = attacker.figherAttackSet.getAttack(attackID).getName();
                 Animationcontroller = FindObjectOfType<AnimationDatabase>();
                 Animationcontroller.playAnim(animToplay);

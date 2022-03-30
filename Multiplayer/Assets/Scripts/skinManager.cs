@@ -123,13 +123,12 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
         //{
         //    buttontext.text = "Please Change character";
         //}
-        //else
-        //{
+        
             photonView.RPC("choseSkillScreen", RpcTarget.All);
-        
-        
 
 
+
+        
 
     }
     public void OnClickLeaveRoom()
