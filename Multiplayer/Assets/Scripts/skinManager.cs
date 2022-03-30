@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
 using UnityEngine.UI;
+using TMPro;
 
 public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -17,6 +18,8 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject backgroundSelector;
     public int selectedCharacter;
     public int selectedCharacter2;
+    public int testselectedCharacter2;
+    public TextMeshProUGUI buttontext;
     private void Awake()
     {
     selectedCharacter = PlayerPrefs.GetInt("SelectedCharacter", 0);
@@ -32,7 +35,7 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
             skins[selectedCharacter2].SetActive(true);
         }
         photonView.RPC("sendCharacterSelect", RpcTarget.All, selectedCharacter);
-        photonView.RPC("sendCharacterSelect", RpcTarget.All, selectedCharacter);
+        photonView.RPC("sendCharacterSelect2", RpcTarget.All, selectedCharacter2);
     }
 
 
@@ -97,9 +100,10 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Update()
     {
-
         if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
         {
+
+
             chooseSkill.SetActive(true);
 
 
@@ -115,7 +119,15 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void onChooseSkill()
     {
-        photonView.RPC("choseSkillScreen", RpcTarget.All);
+        if (selectedCharacter == selectedCharacter2)
+        {
+            buttontext.text = "Please Change character";
+        }
+        else
+        {
+            photonView.RPC("choseSkillScreen", RpcTarget.All);
+        }
+        
 
 
 
@@ -159,6 +171,7 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
         PhotonNetwork.LoadLevel("Game");
         
     }
+
     [PunRPC]
     public void sendCharacterSelect(int selectedCharacter)
     {

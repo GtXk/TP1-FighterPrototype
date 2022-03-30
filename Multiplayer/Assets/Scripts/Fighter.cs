@@ -18,8 +18,8 @@ public class Fighter : MonoBehaviourPun
     public int rng;
    public int fightBoost = 0;
     public int fightBoost2 = 0;
-    public int damageboost;
-    public int accuracyDebuff;
+    public int damageboost = 0;
+    public int accuracyDebuff = 0;
     public FightSystem script;
 
     public AttackDatabase myAttackDatabase;
