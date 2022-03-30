@@ -41,7 +41,7 @@ namespace DatabaseAPI.Account
         {
             if (AccountController.controller == null) AccountController.controller = this;
             else if (AccountController.controller != this) Destroy(this.gameObject);
-            DontDestroyOnLoad(this.gameObject);
+           
         }
 
         public void Start()
@@ -96,7 +96,7 @@ namespace DatabaseAPI.Account
             PlayerPrefs.SetString("PLAYFAB_USER_PASSWORD", userPassword);
             DebugMessage = "you're now connected!";
             //loginPanel.SetActive(false);
-            DontDestroyOnLoad(this.gameObject);
+            
             SceneManager.LoadScene("Loading");
 #if UNITY_ANDROID || UNITY_IOS
             recoveryButton.SetActive(false);
@@ -117,7 +117,7 @@ namespace DatabaseAPI.Account
         {
             Debug.LogError(error.GenerateErrorReport());
             DebugMessage = error.GenerateErrorReport();
-            DontDestroyOnLoad(this.gameObject);
+            
             connectedToAnAccount = false;
         }
 #if UNITY_ANDROID || UNITY_IOS
@@ -138,14 +138,14 @@ namespace DatabaseAPI.Account
             connectedToAnAccount = true;
             GetStats();
             GetAccountInfo();
-            DontDestroyOnLoad(this.gameObject);
+          
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
         private void OnRegisterFailed(PlayFabError error)
         {
             Debug.Log(error.GenerateErrorReport());
             DebugMessage = error.GenerateErrorReport();
-            DontDestroyOnLoad(this.gameObject);
+            
             connectedToAnAccount = false;
         }
 #if UNITY_ANDROID || UNITY_IOS
