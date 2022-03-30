@@ -23,10 +23,6 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     public int ChosenCharacter;
     public int ChosenCharacter2;
     public int rng;
-    public Slider player1health;
-    public Slider player2health;
-    public Slider player1mana;
-    public Slider player2mana;
     public int selectedItem;
     public int selectedItem2;
     public Transform player1FightPosition;
@@ -176,7 +172,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     }
     IEnumerator myAttack(Fighter attacker, Fighter defender, FightHUD defendersHud, FightHUD attackersHud, int playeri, int attackID) //its taking defenders and attackers hud - this could be improved. 
     {
-        if((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) < 0)
+        if ((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) < 0)
         {
             Debug.Log("WORKED");
             MenuText.text = "You dont have enough mana";
@@ -185,30 +181,47 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
             enableAllButtons();
             StartCoroutine(StateChanger(attacker, defender.playerNum)); //uses playeri and playlist local photon function
 
-       
+
         }
-        else if((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) >= 0)
+        else if ((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) >= 0)
         {
-   
-     
-            defender.TakeDamage(attacker.figherAttackSet.getAttack(attackID) );
-            attacker.manaUsed(attacker.figherAttackSet.getAttack(attackID));
-            if (PhotonNetwork.IsMasterClient)
 
+            if (attackID == 3)
             {
-                rng = Random.Range(0, 100);
+                Debug.Log("Heal path");
+                attacker.Heal(attacker.figherAttackSet.getAttack(attackID));
+                string animToplay = attacker.figherAttackSet.getAttack(attackID).getName();
+                Animationcontroller = FindObjectOfType<AnimationDatabase>();
+                Animationcontroller.playAnim(animToplay);
+                attackersHud.setMana(attacker.currentMana);
+                attackersHud.setHealth(attacker.currentHealth);
+                MenuText.text = attacker.FighterName + " Uses " + attacker.figherAttackSet.getAttack(attackID).getName();
+                yield return new WaitForSeconds(2f);
+                StartCoroutine(StateChanger(defender, attacker.playerNum));
+                yield return new WaitForSeconds(2f);
 
-                photonView.RPC("shareRng", RpcTarget.All, rng);
             }
-            string animToplay = attacker.figherAttackSet.getAttack(attackID).getName();
-            Animationcontroller = FindObjectOfType<AnimationDatabase>();
-            Animationcontroller.playAnim(animToplay);
-            attackersHud.setMana(attacker.currentMana);
-            defendersHud.setHealth(defender.currentHealth);
-            MenuText.text = attacker.FighterName + " Uses " + attacker.figherAttackSet.getAttack(attackID).getName();
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(StateChanger(defender, attacker.playerNum));
-            yield return new WaitForSeconds(2f);
+            else
+            {
+                defender.TakeDamage(attacker.figherAttackSet.getAttack(attackID));
+                attacker.manaUsed(attacker.figherAttackSet.getAttack(attackID));
+                if (PhotonNetwork.IsMasterClient)
+
+                {
+                    rng = Random.Range(0, 100);
+
+                    photonView.RPC("shareRng", RpcTarget.All, rng);
+                }
+                string animToplay = attacker.figherAttackSet.getAttack(attackID).getName();
+                Animationcontroller = FindObjectOfType<AnimationDatabase>();
+                Animationcontroller.playAnim(animToplay);
+                attackersHud.setMana(attacker.currentMana);
+                defendersHud.setHealth(defender.currentHealth);
+                MenuText.text = attacker.FighterName + " Uses " + attacker.figherAttackSet.getAttack(attackID).getName();
+                yield return new WaitForSeconds(2f);
+                StartCoroutine(StateChanger(defender, attacker.playerNum));
+                yield return new WaitForSeconds(2f);
+            }
         }
     }
     [PunRPC]
@@ -338,7 +351,8 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     {
 
 
-        healPlayer(3);
+        
+        buttonAttack(3);
     }
 
     void buttonAttack(int attackID)
@@ -358,47 +372,8 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-    void healPlayer(int attackID)
-    {
-        if (state == FightState.PLAYERONETURN)
-        {
+   
 
-            photonView.RPC("player1heal", RpcTarget.All);
-            playhealattack( player1Prefab, attackID);
-        }
-        else if (state == FightState.PLAYERTWOTURN)
-        {
-            photonView.RPC("player2heal", RpcTarget.All);
-            playhealattack(player2Prefab, attackID);
-        }
-    }
-    [PunRPC]
-    public void player1heal()
-    {
-        player1Prefab.currentHealth += 10;
-        player1Prefab.currentMana -= 20;
-       player1health.value = player1Prefab.currentHealth;
-        player1mana.value = player1Prefab.currentMana;
-        state = FightState.PLAYERTWOTURN;
-        PlayerTwoTurn();
-    }
-    [PunRPC]
-    public void player2heal()
-    {
-        
-        player2Prefab.currentHealth += 10;
-        player2Prefab.currentMana -= 20;
-        player2health.value = player2Prefab.currentHealth;
-        player2mana.value = player2Prefab.currentMana;
-        state = FightState.PLAYERONETURN;
-        PlayerOneTurn();
-    }
-    public void playhealattack(Fighter player, int attackID)
-    {
-        string animToplay = player.figherAttackSet.getAttack(attackID).getName();
-        Animationcontroller = FindObjectOfType<AnimationDatabase>();
-        Animationcontroller.playAnim(animToplay);
-    }
     [PunRPC]
     public void playerAttack(int playeri, int attackID)
     {

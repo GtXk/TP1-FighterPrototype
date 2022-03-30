@@ -91,7 +91,11 @@ public class Fighter : MonoBehaviourPun
     {
         this.playerNum = num;
     }
-
+    public void Heal(Attack heal)
+    {
+        int addhealth = heal.getHeal();
+        currentHealth += addhealth;
+    }
     public void TakeDamage(Attack anyAttack)
     {
         //have master client calculate rng, fixes any any errors related to rng
