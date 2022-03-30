@@ -26,7 +26,7 @@ public class AttackDatabase : MonoBehaviour
 
         allAttacksDatabase[4] = new Attack("Kick", "Basic", 8, 98, 0, -10);
         allAttacksDatabase[5] = new Attack("Water Whip", "Water", 12, 90, 0, 10);
-        allAttacksDatabase[6] = new Attack("Tsunami", "Water", 22, 50, 0, 20);
+        allAttacksDatabase[6] = new Attack("Tsunami", "Water", 22, 50, 50, 20);
         allAttacksDatabase[7] = new Attack("Water Shield", "Water", 0, 82, 15, 20);
 
         allAttacksDatabase[8] = new Attack("Dropkick", "Basic", 8, 98, 0, -10);
