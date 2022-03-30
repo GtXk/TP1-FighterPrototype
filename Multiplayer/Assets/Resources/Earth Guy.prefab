@@ -145,11 +145,11 @@ MonoBehaviour:
   playerNum: 0
   FighterName: Earth Guy
   playerName: Earth Guy
-  maxHealth: 50
-  currentHealth: 50
-  maxMana: 40
-  currentMana: 40
   charType: 
+  maxHealth: 50
+  maxMana: 40
+  currentHealth: 50
+  currentMana: 40
   rng: 0
   fightBoost: 0
   fightBoost2: 0

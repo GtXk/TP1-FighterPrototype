@@ -17,18 +17,18 @@ public class AddWin : MonoBehaviour
     {
         if (GetPlayerState() == FightState.WON)
         {
-            SendLeaderboard(1);
-            lostCanvas.gameObject.SetActive(false);
-            winCanvas.gameObject.SetActive(true);
+            SendLeaderboard(1); //Adds 1 win to the leaderboard database
+            lostCanvas.gameObject.SetActive(false); 
+            winCanvas.gameObject.SetActive(true); //enables winner screen
         }
         if(GetPlayerState() == FightState.LOST)
         {
             winCanvas.gameObject.SetActive(false);
-            lostCanvas.gameObject.SetActive(true);
+            lostCanvas.gameObject.SetActive(true); //enables loser screen
         }
     }
 
-    public FightState GetPlayerState()
+    public FightState GetPlayerState() //returns the state of the fightsystem - different to each player - at the end of the game one player will have a "LOST" and the other a "WIN" state.
     {
         return FightSystem.state;
     }
@@ -38,7 +38,7 @@ public class AddWin : MonoBehaviour
         SceneManager.LoadScene("Lobby");
     }
     //update leaderboards
-    public void SendLeaderboard(int score)
+    public void SendLeaderboard(int score) //Increments the score of the "Wins" for the leaderboarder (uploads to the database)
     {
         var request = new UpdatePlayerStatisticsRequest
         {
@@ -51,19 +51,19 @@ public class AddWin : MonoBehaviour
                 }
             }
         };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError);
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError); //After it is sent it either runs the "OnLeaderBoardUpdate" or "OnError" function. "OnError" only is called when there is a error.
     }
-    void OnLeaderboardUpdate(UpdatePlayerStatisticsResult Wins)
+    void OnLeaderboardUpdate(UpdatePlayerStatisticsResult Wins) //If the SendLeaderBoard is successful this function is called
     {
         GetAccountInfo();
         
-        Debug.Log("Successfully sent");
+        Debug.Log("Successfully sent"); //Informs that the leaderboard has been updated.
 
 
     }
-    void OnError(PlayFabError error)
+    void OnError(PlayFabError error) //If an error has occured with SendLeaderboard()
     {
-        Debug.Log("Error");
+        Debug.Log("Coudnt update leaderboard"); //allows to somewhat pinpoint the error.
     }
     void GetAccountInfo()
     {

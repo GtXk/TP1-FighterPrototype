@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public enum FightState { START, PLAYERONETURN, PLAYERTWOTURN, WON, LOST }
+public enum FightState { START, PLAYERONETURN, PLAYERTWOTURN, WON, LOST } //States based on the state of the game.
 
 public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -13,13 +13,11 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
     public Fighter player1Prefab;
     public Fighter player2Prefab;
-    //public Fighter player3Prefab;
-    //public Fighter player4Prefab;
+
     public GameObject player1Character;
     public GameObject player2Character;
     public AnimationDatabase Animationcontroller;
     public List<GameObject> playerCharacters;
-    public Fighter Lol;
     public int ChosenCharacter;
     public int ChosenCharacter2;
     public int rng;
@@ -56,20 +54,19 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
     void Update()
     {
-        //set up game
-        int numberPlayers = PhotonNetwork.PlayerList.Length;
+        int numberPlayers = PhotonNetwork.PlayerList.Length; //Gets the number of players connected
         if (numberPlayers == 2)
         {
-            if (GameStart == false)
+            if (GameStart == false) //If 2 players are connected and the gamestart is false this will setup all the necessary things for the game and enable the gamestart to true.
             {
                 SetPlayers();
                 state = FightState.START;
-                StartCoroutine(SetupFight());
+                StartCoroutine(SetupFight()); //Enumerators are used to dictate the fight - useful for state of the game and waiting for photon to sent/recieve data.
                 GameStart = true;
             }
         }
 
-        if (numberPlayers != 2 && GameStart == true)
+        if (numberPlayers != 2 && GameStart == true) //incase a player leaves then the other player will win the game.
         {
             state = FightState.WON;
             ENDFight();
@@ -82,7 +79,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     {
         int fightBoost = PlayerPrefs.GetInt("SelectedItem");
         int fightBoost2 = PlayerPrefs.GetInt("SelectedItem2");
-        Fighter[] Fighters = GetAllPlayers();
+        Fighter[] Fighters = GetAllPlayers(); //All fighter objects tied to the fighter array
         
             player1Prefab = Fighters[1];
         
@@ -124,31 +121,31 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         
 
 
-        player1Prefab.setPlayerNum(1);
+        player1Prefab.setPlayerNum(1); //Prefabs are set a player number to differntiate player 1 or player 2.
         player2Prefab.setPlayerNum(2);
         
     }
 
-    Fighter[] GetAllPlayers()
+    Fighter[] GetAllPlayers() //Finds all the fighter objects
     {
         return GameObject.FindObjectsOfType<Fighter>();
     }
 
-    void SpawnPlayers(GameObject myPlayer, Vector3 position, Quaternion rotation)
+    void SpawnPlayers(GameObject myPlayer, Vector3 position, Quaternion rotation) //Instantiate the objects through the network using photon.
     {
         PhotonNetwork.Instantiate(myPlayer.name, position, rotation);
     }
 
     public void OnJoinedRoom(GameObject myPlayer, GameObject myPlayer2)
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient) //Only the host will be able to call this.
         {
             int totalPlayers = PhotonNetwork.PlayerList.Length;
             if (totalPlayers == 1)
             {
                 SpawnPlayers(myPlayer, player1FightPosition.position, Quaternion.Euler(0f, 0f, 0f));
             }
-            if (totalPlayers == 2)
+            if (totalPlayers == 2) //Spawns two players.
             {
                 SpawnPlayers(myPlayer, player1FightPosition.position, Quaternion.Euler(0f, 0f, 0f));
                 SpawnPlayers(myPlayer2, player2FightPosition.position, Quaternion.Euler(0f, 180f, 0f));
@@ -158,26 +155,22 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
     IEnumerator SetupFight()
     {
-
-       
-
         player1HUD.setHUD(player1Prefab);
         player2HUD.setHUD(player2Prefab);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f); //Dekay is used to make sure everything is setup - loading part of the game - photon sometimes might not have enough time to relay information.
 
-       state = FightState.PLAYERONETURN;
+        state = FightState.PLAYERONETURN;
+        SetUpButtons(); //Setup all the attack buttons with their respective names only.
         PlayerOneTurn();
-        SetUpButtons();
 
     }
     IEnumerator myAttack(Fighter attacker, Fighter defender, FightHUD defendersHud, FightHUD attackersHud, int playeri, int attackID) //its taking defenders and attackers hud - this could be improved. 
-    {
-        if ((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) < 0)
+    {   // This myAttack function calculates all the things that occuring during when a player attacks another player (namely the attacker and the defender - who is taking the damage).
+        if ((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) < 0) //If state to determine if u have enough mana for a special attack
         {
-            Debug.Log("WORKED");
             MenuText.text = "You dont have enough mana";
-            disableAllButtons();
-            yield return new WaitForSeconds(2f);
+            disableAllButtons(); //Disables the attack buttons
+            yield return new WaitForSeconds(2f); 
             enableAllButtons();
             StartCoroutine(StateChanger(attacker, defender.playerNum)); //uses playeri and playlist local photon function
 
@@ -186,7 +179,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         else if ((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) >= 0)
         {
 
-            if (attackID == 3)
+            if (attackID == 3) 
             {
                 Debug.Log("Heal path");
                 attacker.Heal(attacker.figherAttackSet.getAttack(attackID));
@@ -285,14 +278,12 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    void ENDFight()
+    void ENDFight() //Decides on what happens to the winner and loser
     {
-      
         if(state == FightState.WON)
         {
             MenuText.text = "You killed him! You Won... I guess?";
             SceneManager.LoadScene("WinEnd");
-      
         }
         else if (state == FightState.LOST)
         {
@@ -300,9 +291,9 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
             SceneManager.LoadScene("WinEnd");
         }
     }
-    void SetUpButtons()
+    void SetUpButtons() //This functions only works for the local clients - Updates the button names with the attack names.
     {
-        if (PhotonNetwork.PlayerList[0].IsLocal)
+        if (PhotonNetwork.PlayerList[0].IsLocal) 
         {
             for (int i = 0; i < attackButtons.Length; i++)
             {
@@ -318,41 +309,30 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    void PlayerOneTurn()
+    void PlayerOneTurn() //Indicates whether its playerone turn
     {
-        
         MenuText.text = "Fight! " + player1Prefab.FighterName;
     }
 
-    void PlayerTwoTurn()
+    void PlayerTwoTurn() //Indicates whether its playertwo turn
     {
-        
         MenuText.text = "Fight! " + player2Prefab.FighterName;
     }
 
     public void onLightAttackButton()
     {
-        
-        
         buttonAttack(0);
     }
     public void onMediumAttackButton()
     {
-        
-    
         buttonAttack(1);
     }
     public void onHeavyAttackButton()
     {
-        
- 
         buttonAttack(2);
     }
     public void onHealButton()
     {
-
-
-        
         buttonAttack(3);
     }
 
@@ -362,21 +342,21 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         {
             if(PhotonNetwork.PlayerList[1].IsLocal)
             {
-                photonView.RPC("playerAttack", RpcTarget.All, 2, attackID);
+                photonView.RPC("playerAttackPhoton", RpcTarget.All, 2, attackID);
             }
         }
         else if (state == FightState.PLAYERONETURN)
         {
             if (PhotonNetwork.PlayerList[0].IsLocal)
             {
-                photonView.RPC("playerAttack", RpcTarget.All, 1, attackID);
+                photonView.RPC("playerAttackPhoton", RpcTarget.All, 1, attackID);
             }
         }
     }
    
 
     [PunRPC]
-    public void playerAttack(int playeri, int attackID)
+    public void playerAttackPhoton(int playeri, int attackID)
     {
         if(playeri == 1)
         {

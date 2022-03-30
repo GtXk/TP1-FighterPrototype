@@ -157,11 +157,11 @@ MonoBehaviour:
   playerNum: 1
   FighterName: Water guy
   playerName: Water guy
-  maxHealth: 50
-  currentHealth: 50
-  maxMana: 40
-  currentMana: 40
   charType: 
+  maxHealth: 50
+  maxMana: 40
+  currentHealth: 50
+  currentMana: 40
   rng: 0
   fightBoost: 0
   fightBoost2: 0

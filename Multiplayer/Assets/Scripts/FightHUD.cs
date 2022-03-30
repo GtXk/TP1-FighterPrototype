@@ -10,7 +10,7 @@ public class FightHUD : MonoBehaviourPun, IPunObservable
     public Slider HealthSlider;
     public Slider ManaSlider;
 
-    public void setHUD(Fighter fighter)
+    public void setHUD(Fighter fighter) //This function sets up the hud by getting all the information of the fighter.
     {
         FighterText.text = fighter.FighterName;
         HealthSlider.maxValue = fighter.maxHealth;
@@ -22,13 +22,13 @@ public class FightHUD : MonoBehaviourPun, IPunObservable
     public void setHealth(int Health)
     {
         HealthSlider.value = Health;
-        photonView.RPC("setHealthPhoton", RpcTarget.All, Health); //HealthSlider.value
+        photonView.RPC("setHealthPhoton", RpcTarget.All, Health); //Updates all clients including the host to update the Health bar slider
     }
 
     public void setMana(int mana)
     {
         ManaSlider.value = mana;
-        photonView.RPC("setManaPhoton", RpcTarget.All, mana); //HealthSlider.value
+        photonView.RPC("setManaPhoton", RpcTarget.All, mana);//Updates all clients including the host to update the Mana bar slider
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -44,13 +44,13 @@ public class FightHUD : MonoBehaviourPun, IPunObservable
     }
     
     [PunRPC]
-    void setHealthPhoton(int health)
+    void setHealthPhoton(int health) //Functions which is called above by photonView.RPC("setHealthPhoton", RpcTarget.All, Health);
     {
         HealthSlider.value = health;
     }
 
     [PunRPC]
-    void setManaPhoton(int mana)
+    void setManaPhoton(int mana) //Functions which is called above by photonView.RPC("setManaPhoton", RpcTarget.All, mana);
     {
         ManaSlider.value = mana;
        
