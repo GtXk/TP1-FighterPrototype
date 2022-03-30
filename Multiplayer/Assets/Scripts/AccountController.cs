@@ -226,7 +226,7 @@ namespace DatabaseAPI.Account
             PlayerPrefs.DeleteKey("PLAYFAB_USER_EMAIL");
             Debug.Log("Now Disconnected.");
             connectedToAnAccount = false;
-            Application.Quit();
+           // Application.Quit();
             SceneManager.LoadScene("Register");
 
         }
