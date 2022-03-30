@@ -98,11 +98,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
             player1Prefab.accuracyDebuff = 1;
         }
-        if (fightBoost == 3)
-        {
 
-            player2Prefab.damageboost += 5;
-        }
 
         
         player2Prefab = Fighters[0];
@@ -111,15 +107,20 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
         {
 
             player2Prefab.maxHealth += 10;
-            player2Prefab.currentHealth = 10;
+            player2Prefab.currentHealth += 10;
         }
         if (fightBoost2 == 2)
         {
-            player2Prefab.accuracyDebuff += 1;
+            player2Prefab.accuracyDebuff = 1;
+        }
+        if (fightBoost == 3)
+        {
+
+            player2Prefab.damageboost = 5;
         }
         if (fightBoost2 == 3)
         {
-            player1Prefab.damageboost += 5;
+            player1Prefab.damageboost = 5;
         }
         
 

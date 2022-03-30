@@ -96,25 +96,21 @@ public class Fighter : MonoBehaviourPun
     {
         //have master client calculate rng, fixes any any errors related to rng
 
-        //if (PhotonNetwork.IsMasterClient)
-
-        //{
-        //    rng = Random.Range(0, 100);
-
-        //    if (accuracyDebuff == 1)
-        //    {
-        //        rng += 15;
 
 
-        //    }
 
-        //    photonView.RPC("shareRng", RpcTarget.All, rng);
-        //}
+
+
+     
         script = FindObjectOfType<FightSystem>();
 
         int attack = anyAttack.getDamage();
         int accuracy = anyAttack.getAccuracy();
         rng = script.rng;
+        if (accuracyDebuff == 1)
+        {
+            rng += 10;
+        }
         Debug.LogError("calculatedrng: " + rng);
         if (rng > accuracy)
             {
