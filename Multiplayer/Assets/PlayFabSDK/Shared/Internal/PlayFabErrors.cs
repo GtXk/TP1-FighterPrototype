@@ -525,8 +525,6 @@ namespace PlayFab
         DuplicateTitleNameForPublisher = 1521,
         AzureTitleCreationInProgress = 1522,
         DuplicateAzureResourceId = 1523,
-        TitleContraintsPublisherDeletion = 1524,
-        InvalidPlayerAccountPoolId = 1525,
         MatchmakingEntityInvalid = 2001,
         MatchmakingPlayerAttributesInvalid = 2002,
         MatchmakingQueueNotFound = 2016,
@@ -550,9 +548,6 @@ namespace PlayFab
         MatchmakingBadRequest = 2059,
         PubSubFeatureNotEnabledForTitle = 2500,
         PubSubTooManyRequests = 2501,
-        PubSubConnectionHandleAccessDenied = 2502,
-        PubSubConnectionHandleInvalid = 2503,
-        PubSubSubscriptionLimitExceeded = 2504,
         TitleConfigNotFound = 3001,
         TitleConfigUpdateConflict = 3002,
         TitleConfigSerializationError = 3003,
@@ -670,11 +665,7 @@ namespace PlayFab
         EventSamplingInvalidRatio = 14000,
         EventSamplingInvalidEventNamespace = 14001,
         EventSamplingInvalidEventName = 14002,
-        EventSamplingRatioNotFound = 14003,
-        EventSinkConnectionInvalid = 15000,
-        EventSinkConnectionUnauthorized = 15001,
-        EventSinkRegionInvalid = 15002,
-        OperationCanceled = 16000
+        EventSamplingRatioNotFound = 14003
     }
 
     public class PlayFabError

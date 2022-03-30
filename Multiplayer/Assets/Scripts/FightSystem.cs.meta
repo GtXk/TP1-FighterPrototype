@@ -3,7 +3,17 @@ guid: 812244bb2550dcd42bb8911b491b21df
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player1Prefab: {fileID: 4177022771577042123, guid: 6b933bb771c15dc48b087af9bee698bb, type: 3}
+  - player2Prefab: {fileID: 4177022771577042123, guid: 6b933bb771c15dc48b087af9bee698bb, type: 3}
+  - player3Prefab: {instanceID: 0}
+  - Lol: {instanceID: 0}
+  - player1FightPosition: {instanceID: 0}
+  - player2FightPosition: {instanceID: 0}
+  - MenuText: {instanceID: 0}
+  - player1HUD: {instanceID: 0}
+  - player2HUD: {instanceID: 0}
+  - playerImageG: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

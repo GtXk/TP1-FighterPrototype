@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: eu
     Server: 
     Port: 0
     ProxyServer: 
@@ -50,6 +50,48 @@ MonoBehaviour:
   - player2heavyattack
   - player2lightattack
   - player2mediumattack
+  - P1StateChanger
+  - P2StateChanger
+  - playerAttack
+  - StateChanger
+  - loadLevel
+  - sendCharacterSelect
+  - sendCharacterSelect2
+  - SetPlayers
+  - changeAnim
+  - endAnim
+  - startAnim
+  - fireGuyHeal
+  - fireGuyBigAttack
+  - sendBackground
+  - fireGuyNormalAttack
+  - WaterGuyMediumAttack
+  - WaterGuyNormalAttack
+  - WaterGuySpecialAttack
+  - waterNormalAttack
+  - addBackground
+  - waterMediumAttack
+  - waterBigAttack
+  - sendItemSelect
+  - sendItemSelect2
+  - choseSkillScreen
+  - Heal
+  - setHealthPhoton
+  - setManaPhoton
+  - elementDamage
+  - normalDamage
+  - shareRng
+  - airBigAttack
+  - airMediumAttack
+  - airNormalAttack
+  - earthBigAttack
+  - earthMediumAttack
+  - earthNormalAttack
+  - attack
+  - counterelementattack
+  - normalattack
+  - elemntaldamage
+  - normaldamage
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1
   DevRegionSetOnce: 1

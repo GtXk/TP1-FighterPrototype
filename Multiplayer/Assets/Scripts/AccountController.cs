@@ -97,7 +97,7 @@ namespace DatabaseAPI.Account
             DebugMessage = "you're now connected!";
             //loginPanel.SetActive(false);
             DontDestroyOnLoad(this.gameObject);
-            SceneManager.LoadScene("Lobby");
+            SceneManager.LoadScene("Loading");
 #if UNITY_ANDROID || UNITY_IOS
             recoveryButton.SetActive(false);
 #endif

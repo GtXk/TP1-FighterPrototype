@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public enum FightState { START, PLAYERONETURN, PLAYERTWOTURN, WON, LOST }
 
@@ -10,314 +11,378 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 {
 
 
-    public GameObject player1Prefab;
-    public GameObject player2Prefab;
+    public Fighter player1Prefab;
+    public Fighter player2Prefab;
+    //public Fighter player3Prefab;
+    //public Fighter player4Prefab;
+    public GameObject player1Character;
+    public GameObject player2Character;
+    public AnimationDatabase Animationcontroller;
+    public List<GameObject> playerCharacters;
+    public Fighter Lol;
+    public int ChosenCharacter;
+    public int ChosenCharacter2;
+    public int rng;
 
+    public int selectedItem;
+    public int selectedItem2;
     public Transform player1FightPosition;
     public Transform player2FightPosition;
-
-    Fighter Player1Unit;
-    Fighter Player2Unit;
-    public float rng;
-
     public Text MenuText;
 
     public FightHUD player1HUD;
     public FightHUD player2HUD;
 
-    public FightState state;
+    public Button[] attackButtons;
 
-    // Start is called before the first frame update
+    public Sprite playerImageG;
+
+    public static FightState state;
+
+    public bool GameStart = false;
+
+
     void Start()
     {
- 
-        state = FightState.START;
-        StartCoroutine(SetupFight());
+        //get values from character select screen
+        ChosenCharacter = PlayerPrefs.GetInt("SelectedCharacter");
+        ChosenCharacter2 = PlayerPrefs.GetInt("SelectedCharacter2");
+        player1Character = playerCharacters[ChosenCharacter];
+        player2Character = playerCharacters[ChosenCharacter2];
+        OnJoinedRoom(player1Character,player2Character);
+
+
+
+    }
+
+    void Update()
+    {
+        //set up game
+        int numberPlayers = PhotonNetwork.PlayerList.Length;
+        if (numberPlayers == 2)
+        {
+            if (GameStart == false)
+            {
+                SetPlayers();
+                state = FightState.START;
+                StartCoroutine(SetupFight());
+                GameStart = true;
+            }
+        }
+
+        if (numberPlayers != 2 && GameStart == true)
+        {
+            state = FightState.WON;
+            ENDFight();
+        }
+       
+
+    }
+    //assign player prefabs and assign any item boosts.
+    void SetPlayers()
+    {
+        int fightBoost = PlayerPrefs.GetInt("SelectedItem");
+        int fightBoost2 = PlayerPrefs.GetInt("SelectedItem2");
+        Fighter[] Fighters = GetAllPlayers();
+        
+            player1Prefab = Fighters[1];
+        
+        if (fightBoost == 1)
+        {
+
+            player1Prefab.maxHealth += 10;
+            player1Prefab.currentHealth += 10;
+        }
+        if (fightBoost == 2)
+        {
+
+            player1Prefab.accuracyDebuff = 1;
+        }
+        if (fightBoost == 3)
+        {
+
+            player2Prefab.damageboost += 5;
+        }
+
+        
+        player2Prefab = Fighters[0];
+        
+        if (fightBoost2 == 1)
+        {
+
+            player2Prefab.maxHealth += 10;
+            player2Prefab.currentHealth = 10;
+        }
+        if (fightBoost2 == 2)
+        {
+            player2Prefab.accuracyDebuff += 1;
+        }
+        if (fightBoost2 == 3)
+        {
+            player1Prefab.damageboost += 5;
+        }
+        
+
+
+        player1Prefab.setPlayerNum(1);
+        player2Prefab.setPlayerNum(2);
+        
+    }
+
+    Fighter[] GetAllPlayers()
+    {
+        return GameObject.FindObjectsOfType<Fighter>();
+    }
+
+    void SpawnPlayers(GameObject myPlayer, Vector3 position, Quaternion rotation)
+    {
+        PhotonNetwork.Instantiate(myPlayer.name, position, rotation);
+    }
+
+    public void OnJoinedRoom(GameObject myPlayer, GameObject myPlayer2)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            int totalPlayers = PhotonNetwork.PlayerList.Length;
+            if (totalPlayers == 1)
+            {
+                SpawnPlayers(myPlayer, player1FightPosition.position, Quaternion.Euler(0f, 0f, 0f));
+            }
+            if (totalPlayers == 2)
+            {
+                SpawnPlayers(myPlayer, player1FightPosition.position, Quaternion.Euler(0f, 0f, 0f));
+                SpawnPlayers(myPlayer2, player2FightPosition.position, Quaternion.Euler(0f, 180f, 0f));
+            }
+        } 
     }
 
     IEnumerator SetupFight()
     {
-        GameObject Player1Ready = Instantiate(player1Prefab, player1FightPosition);
-        Player1Unit = Player1Ready.GetComponent<Fighter>();
 
-        GameObject Player2Ready = Instantiate(player2Prefab, player2FightPosition);
-        Player2Unit = Player2Ready.GetComponent<Fighter>();
+       
 
-        MenuText.text = "The " + Player2Unit.FighterName + " Has arrived";
-
-        player1HUD.setHUD(Player1Unit);
-        player2HUD.setHUD(Player2Unit);
-
+        player1HUD.setHUD(player1Prefab);
+        player2HUD.setHUD(player2Prefab);
         yield return new WaitForSeconds(2f);
 
-        state = FightState.PLAYERONETURN;
+       state = FightState.PLAYERONETURN;
         PlayerOneTurn();
+        SetUpButtons();
+
     }
-
-    IEnumerator PlayerOneLightAttack()
+    IEnumerator myAttack(Fighter attacker, Fighter defender, FightHUD defendersHud, FightHUD attackersHud, int playeri, int attackID) //its taking defenders and attackers hud - this could be improved. 
     {
-  
-        bool isDead = Player2Unit.TakeDamage(5);
-
-        player2HUD.setHealth(Player2Unit.currentHealth);
-        MenuText.text = Player1Unit.FighterName + " attacks!";
-
-        yield return new WaitForSeconds(2f);
-
-        if (isDead)
+        if((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) < 0)
         {
-            state = FightState.WON;
-            ENDFight();
-        }
-        else
-        {
-            state = FightState.PLAYERTWOTURN;
-            PlayerTwoTurn();
-        }
-    }
-
-    IEnumerator PlayerTwoLightAttack()
-    {
-        bool isDead = Player1Unit.TakeDamage(5);
-
-        player1HUD.setHealth(Player1Unit.currentHealth);
-        MenuText.text = Player2Unit.FighterName + " attacks!";
-
-        yield return new WaitForSeconds(2f);
-
-        if (isDead)
-        {
-            state = FightState.WON;
-            ENDFight();
-        }
-        else
-        {
-            state = FightState.PLAYERONETURN;
-            PlayerOneTurn();
-        }
-    }
-    IEnumerator PlayerOneMediumAttack()
-    {
-        rng = Random.Range(1.0f, 100.0f);
-        if (rng <= 35)
-        {
-            bool isDead = Player2Unit.TakeDamage(10);
-
-            player2HUD.setHealth(Player2Unit.currentHealth);
-            MenuText.text = Player1Unit.FighterName + " attacks!";
-
+            Debug.Log("WORKED");
+            MenuText.text = "You dont have enough mana";
+            disableAllButtons();
             yield return new WaitForSeconds(2f);
+            enableAllButtons();
+            StartCoroutine(StateChanger(attacker, defender.playerNum)); //uses playeri and playlist local photon function
 
-            if (isDead)
+       
+        }
+        else if((attacker.currentMana - attacker.figherAttackSet.getAttack(attackID).getMana()) >= 0)
+        {
+   
+     
+            defender.TakeDamage(attacker.figherAttackSet.getAttack(attackID) );
+            attacker.manaUsed(attacker.figherAttackSet.getAttack(attackID));
+            if (PhotonNetwork.IsMasterClient)
+
             {
-                state = FightState.WON;
-                ENDFight();
+                rng = Random.Range(0, 100);
+
+                photonView.RPC("shareRng", RpcTarget.All, rng);
+            }
+            string animToplay = attacker.figherAttackSet.getAttack(attackID).getName();
+            Animationcontroller = FindObjectOfType<AnimationDatabase>();
+            Animationcontroller.playAnim(animToplay);
+            attackersHud.setMana(attacker.currentMana);
+            defendersHud.setHealth(defender.currentHealth);
+            MenuText.text = attacker.FighterName + " Uses " + attacker.figherAttackSet.getAttack(attackID).getName();
+            yield return new WaitForSeconds(2f);
+            StartCoroutine(StateChanger(defender, attacker.playerNum));
+            yield return new WaitForSeconds(2f);
+        }
+    }
+    [PunRPC]
+    public void shareRng(int calculatedRNG)
+    {
+        rng = calculatedRNG;
+        Debug.LogError("Shared:" + rng);
+        
+
+    }
+
+
+
+    [PunRPC]
+    public IEnumerator StateChanger(Fighter defender, int playerNum)
+    {
+        yield return null;
+        if (defender.currentHealth <= 0)
+        {
+            if(state == FightState.PLAYERONETURN)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    state = FightState.WON;
+                    ENDFight();
+                }
+                else
+                {
+                    state = FightState.LOST;
+                    ENDFight();
+                }
             }
             else
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    state = FightState.LOST;
+                    ENDFight();
+                }
+                else
+                {
+                    state = FightState.WON;
+                    ENDFight();
+                }
+            }
+            
+        }
+        else
+        {
+            if(playerNum == 1)
             {
                 state = FightState.PLAYERTWOTURN;
                 PlayerTwoTurn();
             }
-        }
-        else
-        {
-            MenuText.text = Player1Unit.FighterName + " missed!";
-            yield return new WaitForSeconds(2f);
-            state = FightState.PLAYERTWOTURN;
-            PlayerTwoTurn();
-        }
-    }
-    IEnumerator PlayerTwoMediumAttack()
-    {
-        rng = Random.Range(1.0f, 100.0f);
-        if (rng <= 35)
-        {
-
-            bool isDead = Player1Unit.TakeDamage(10);
-
-            player1HUD.setHealth(Player1Unit.currentHealth);
-            MenuText.text = Player2Unit.FighterName + " attacks!";
-
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                state = FightState.WON;
-                ENDFight();
-            }
-            else
+            if(playerNum == 2)
             {
                 state = FightState.PLAYERONETURN;
                 PlayerOneTurn();
             }
-        }
-        else
-        {
-            MenuText.text = Player2Unit.FighterName + " missed!";
-            yield return new WaitForSeconds(2f);
-            state = FightState.PLAYERONETURN;
-            PlayerOneTurn();
-        }
-    }
-    IEnumerator PlayerOneHeavyAttack()
-    {
-
-        rng = Random.Range(1.0f, 100.0f);
-        if (rng <= 20)
-        {
-            bool isDead = Player2Unit.TakeDamage(15);
-
-            player2HUD.setHealth(Player2Unit.currentHealth);
-            MenuText.text = Player1Unit.FighterName + " attacks!";
-
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                state = FightState.WON;
-                ENDFight();
-            }
-            else
-            {
-                state = FightState.PLAYERTWOTURN;
-                PlayerTwoTurn();
-            }
-        }
-        else
-        {
-            MenuText.text = Player1Unit.FighterName + " missed!";
-            yield return new WaitForSeconds(2f);
-            state = FightState.PLAYERTWOTURN;
-            PlayerTwoTurn();
-        }
-    }
-    IEnumerator PlayerTwoHeavyAttack()
-    {
-        rng = Random.Range(1.0f, 100.0f);
-        if (rng <= 20)
-        {
-
-            bool isDead = Player1Unit.TakeDamage(15);
-
-            player1HUD.setHealth(Player1Unit.currentHealth);
-            MenuText.text = Player2Unit.FighterName + " attacks!";
-
-            yield return new WaitForSeconds(2f);
-
-            if (isDead)
-            {
-                state = FightState.WON;
-                ENDFight();
-            }
-            else
-            {
-                state = FightState.PLAYERONETURN;
-                PlayerOneTurn();
-            }
-        }
-        else
-        {
-            MenuText.text = Player2Unit.FighterName + " missed!";
-            yield return new WaitForSeconds(2f);
-            state = FightState.PLAYERONETURN;
-            PlayerOneTurn();
         }
     }
 
     void ENDFight()
     {
-        //maybe a coroutine
+      
         if(state == FightState.WON)
         {
             MenuText.text = "You killed him! You Won... I guess?";
+            SceneManager.LoadScene("WinEnd");
+      
         }
         else if (state == FightState.LOST)
         {
             MenuText.text = "You dead my dude.. You lost";
+            SceneManager.LoadScene("WinEnd");
+        }
+    }
+    void SetUpButtons()
+    {
+        if (PhotonNetwork.PlayerList[0].IsLocal)
+        {
+            for (int i = 0; i < attackButtons.Length; i++)
+            {
+                attackButtons[i].GetComponentInChildren<Text>().text = player1Prefab.figherAttackSet.getAttack(i).getName();
+            }
+        }
+        else if (PhotonNetwork.PlayerList[1].IsLocal)
+        {
+            for (int i = 0; i < attackButtons.Length; i++)
+            {
+                attackButtons[i].GetComponentInChildren<Text>().text = player2Prefab.figherAttackSet.getAttack(i).getName();
+            }
         }
     }
 
     void PlayerOneTurn()
     {
-        MenuText.text = "Fight! " + Player1Unit.FighterName;
+        
+        MenuText.text = "Fight! " + player1Prefab.FighterName;
     }
 
     void PlayerTwoTurn()
     {
-        MenuText.text = "Fight! " + Player2Unit.FighterName;
+        
+        MenuText.text = "Fight! " + player2Prefab.FighterName;
     }
 
     public void onLightAttackButton()
     {
         
-        if (state != FightState.PLAYERONETURN)
-        {
-            photonView.RPC("player2lightattack", RpcTarget.All);
-           
-        }
-        else
-        {
-            photonView.RPC("player1lightattack", RpcTarget.All);
-          
-        }
+        
+        buttonAttack(0);
     }
     public void onMediumAttackButton()
     {
-
-        if (state != FightState.PLAYERONETURN)
-        {
-            photonView.RPC("player2mediumattack", RpcTarget.All);
-           
-        }
-        else
-        {
-            photonView.RPC("player1mediumattack", RpcTarget.All);
-         
-        }
+        
+    
+        buttonAttack(1);
     }
     public void onHeavyAttackButton()
     {
+        
+ 
+        buttonAttack(2);
+    }
+    public void onHealButton()
+    {
 
-        if (state != FightState.PLAYERONETURN)
+
+        buttonAttack(3);
+    }
+
+    void buttonAttack(int attackID)
+    {
+        if (state == FightState.PLAYERTWOTURN)
         {
-            photonView.RPC("player2heavyattack", RpcTarget.All);
-       
+            if(PhotonNetwork.PlayerList[1].IsLocal)
+            {
+                photonView.RPC("playerAttack", RpcTarget.All, 2, attackID);
+            }
         }
-        else
+        else if (state == FightState.PLAYERONETURN)
         {
-            photonView.RPC("player1heavyattack", RpcTarget.All);
-            
+            if (PhotonNetwork.PlayerList[0].IsLocal)
+            {
+                photonView.RPC("playerAttack", RpcTarget.All, 1, attackID);
+            }
         }
     }
+
     [PunRPC]
-    public void player2lightattack()
+    public void playerAttack(int playeri, int attackID)
     {
-        StartCoroutine(PlayerTwoLightAttack());
+        if(playeri == 1)
+        {
+            StartCoroutine(myAttack(player1Prefab, player2Prefab, player2HUD, player1HUD, playeri, attackID));
+        }
+        if(playeri == 2)
+        {
+            StartCoroutine(myAttack(player2Prefab, player1Prefab, player1HUD, player2HUD, playeri, attackID));
+        }
+
     }
-    [PunRPC]
-    public void player2mediumattack()
+
+    public void disableAllButtons()
     {
-        StartCoroutine(PlayerTwoMediumAttack());
+        foreach(Button button in attackButtons)
+        {
+            button.interactable = false;
+        }
     }
-    [PunRPC]
-    public void player2heavyattack()
+
+    public void enableAllButtons()
     {
-        StartCoroutine(PlayerTwoHeavyAttack());
-    }
-    [PunRPC]
-    public void player1lightattack()
-    {
-        StartCoroutine(PlayerOneLightAttack());
-    }
-    [PunRPC]
-    public void player1mediumattack()
-    {
-        StartCoroutine(PlayerOneMediumAttack());
-    }
-    [PunRPC]
-    public void player1heavyattack()
-    {
-        StartCoroutine(PlayerOneHeavyAttack());
+        foreach (Button button in attackButtons)
+        {
+            button.interactable = true;
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -333,57 +398,5 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
 
     }
 
-    IEnumerator PlayerOneHeal()
-    {
-        Player1Unit.Heal(5);
-
-        player1HUD.setHealth(Player1Unit.currentHealth);
-        MenuText.text = "You feel renewed strength!";
-
-        yield return new WaitForSeconds(2f);
-
-        
-        state = FightState.PLAYERTWOTURN;
-        PlayerTwoTurn();
-
-    }
-
-    IEnumerator PlayerTwoHeal()
-    {
-        Player2Unit.Heal(5);
-
-        player2HUD.setHealth(Player2Unit.currentHealth);
-        MenuText.text = "You feel renewed strength!";
-
-        yield return new WaitForSeconds(2f);
-
-        state = FightState.PLAYERONETURN;
-        PlayerOneTurn();
-
-    }
-
-    public void onHealButton()
-    {
-        if (state != FightState.PLAYERONETURN)
-        {
-            photonView.RPC("player2heal", RpcTarget.All);
-            // StartCoroutine(PlayerTwoHeal());
-        }
-        else
-        {
-            photonView.RPC("player1heal", RpcTarget.All);
-            // StartCoroutine(PlayerOneHeal());
-        }
-
-    }
-    [PunRPC]
-    public void player2heal()
-    {
-        StartCoroutine(PlayerTwoHeal());
-    }
-    [PunRPC]
-    public void player1heal()
-    {
-        StartCoroutine(PlayerOneHeal());
-    }
+  
 }

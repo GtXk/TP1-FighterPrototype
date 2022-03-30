@@ -1,0 +1,336 @@
+fileFormatVersion: 2
+guid: 4c2e8d48ab1faa6409b2b8707fa33a12
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2058
+        width: 974
+        height: 1014
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 959b97eac1f771644bc0df094905301f
+      internalID: -2054344279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_4
+      rect:
+        serializedVersion: 2
+        x: 1035
+        y: 2086
+        width: 1016
+        height: 986
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74e9d8a782dab2e42a4838d5547a8db1
+      internalID: 1842319348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_7
+      rect:
+        serializedVersion: 2
+        x: 2074
+        y: 2100
+        width: 970
+        height: 927
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d99ef9f99ff1f148b71f92c61f3818d
+      internalID: -2116409902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_14
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 1061
+        width: 890
+        height: 988
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e6d3c5763b9e9946b13abdc48985884
+      internalID: -165913321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_16
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 1042
+        width: 967
+        height: 1007
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0d9840c2a44b4746a0c4306ae069676
+      internalID: 811995812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_17
+      rect:
+        serializedVersion: 2
+        x: 2254
+        y: 1054
+        width: 818
+        height: 995
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb6c5c86f11e8fc44bd86ba22cc22f82
+      internalID: 1153933354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_19
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 31
+        width: 817
+        height: 993
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 282f653340923524db6ac87929cb94d9
+      internalID: 2136560237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_20
+      rect:
+        serializedVersion: 2
+        x: 1263
+        y: 31
+        width: 786
+        height: 993
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2766ad249ca86024ba59a66637964bd6
+      internalID: 189571823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FireCharacterSPECIALATTACK_22
+      rect:
+        serializedVersion: 2
+        x: 2287
+        y: 31
+        width: 785
+        height: 993
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8309bf940bbfd004abbbb31ed9156978
+      internalID: 1849013719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      FireCharacterSPECIALATTACK_0: -1794317449
+      FireCharacterSPECIALATTACK_3: 152804692
+      FireCharacterSPECIALATTACK_23: 1173147527
+      FireCharacterSPECIALATTACK_7: -2116409902
+      FireCharacterSPECIALATTACK_13: 1212966382
+      FireCharacterSPECIALATTACK_8: -1871333596
+      FireCharacterSPECIALATTACK_4: 1842319348
+      FireCharacterSPECIALATTACK_16: 811995812
+      FireCharacterSPECIALATTACK_1: -2054344279
+      FireCharacterSPECIALATTACK_14: -165913321
+      FireCharacterSPECIALATTACK_11: 1395364869
+      FireCharacterSPECIALATTACK_12: 1542262460
+      FireCharacterSPECIALATTACK_20: 189571823
+      FireCharacterSPECIALATTACK_21: 1487541067
+      FireCharacterSPECIALATTACK_18: 1792482978
+      FireCharacterSPECIALATTACK_5: 1148293820
+      FireCharacterSPECIALATTACK_17: 1153933354
+      FireCharacterSPECIALATTACK_6: -1933673650
+      FireCharacterSPECIALATTACK_19: 2136560237
+      FireCharacterSPECIALATTACK_15: 242323416
+      FireCharacterSPECIALATTACK_10: -814321440
+      FireCharacterSPECIALATTACK_9: -2141078017
+      FireCharacterSPECIALATTACK_2: -357403568
+      FireCharacterSPECIALATTACK_22: 1849013719
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

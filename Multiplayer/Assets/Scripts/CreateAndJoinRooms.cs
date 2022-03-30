@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using PlayFab.ClientModels;
@@ -17,13 +18,20 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public static string userName;
     public GameObject rowPrefab;
     public Transform rowsParent;
-    int score = 1;
+    public GameObject lobbyMain;
+    public GameObject roomPanel;
+  
 
 
     private void Start()
     {
+        if(PhotonNetwork.InRoom == true)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+
         StartCoroutine(UpdateAllStats());
-        
+        GetLeaderboard();
     }
 
 
@@ -59,17 +67,31 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     }
     public void CreateRoom()
     {
+
         PhotonNetwork.CreateRoom(createInput.text);
+  
     }
 
 
     public void JoinRoom()
     {
+
         PhotonNetwork.JoinRoom(joinInput.text);
+
+
     }
-    public override void OnJoinedRoom()
+    public  void JoinRandom()
     {
-        PhotonNetwork.LoadLevel("Game");
+       
+        PhotonNetwork.JoinRandomOrCreateRoom();
+    }
+
+
+    public override void OnJoinedRoom()
+
+    {
+        lobbyMain.SetActive(false);
+        roomPanel.SetActive(true);
     }
     public void SendLeaderboard(int score)
     {
@@ -119,5 +141,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     void OnError(PlayFabError error)
     {
         Debug.Log("Error");
+    }
+
+    public void OnClickExitGame()
+    {
+        Application.Quit();
+    }
+    public void OnClickMenuButton()
+    {
+        SceneManager.LoadScene("StartMenu");
     }
 }
