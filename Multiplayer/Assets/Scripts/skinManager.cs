@@ -119,14 +119,14 @@ public class skinManager : MonoBehaviourPunCallbacks, IPunObservable
 
     public void onChooseSkill()
     {
-        if (selectedCharacter == selectedCharacter2)
-        {
-            buttontext.text = "Please Change character";
-        }
-        else
-        {
+        //if (selectedCharacter == selectedCharacter2)
+        //{
+        //    buttontext.text = "Please Change character";
+        //}
+        //else
+        //{
             photonView.RPC("choseSkillScreen", RpcTarget.All);
-        }
+        
         
 
 

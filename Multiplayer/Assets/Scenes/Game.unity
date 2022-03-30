@@ -1876,6 +1876,10 @@ MonoBehaviour:
   ChosenCharacter: 0
   ChosenCharacter2: 0
   rng: 0
+  player1health: {fileID: 484586279}
+  player2health: {fileID: 236826627}
+  player1mana: {fileID: 377759611}
+  player2mana: {fileID: 999077632}
   selectedItem: 0
   selectedItem2: 0
   player1FightPosition: {fileID: 511049582}

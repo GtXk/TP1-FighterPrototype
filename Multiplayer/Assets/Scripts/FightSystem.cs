@@ -23,7 +23,10 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     public int ChosenCharacter;
     public int ChosenCharacter2;
     public int rng;
-
+    public Slider player1health;
+    public Slider player2health;
+    public Slider player1mana;
+    public Slider player2mana;
     public int selectedItem;
     public int selectedItem2;
     public Transform player1FightPosition;
@@ -335,7 +338,7 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
     {
 
 
-        buttonAttack(3);
+        healPlayer(3);
     }
 
     void buttonAttack(int attackID)
@@ -355,7 +358,47 @@ public class FightSystem : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
+    void healPlayer(int attackID)
+    {
+        if (state == FightState.PLAYERONETURN)
+        {
 
+            photonView.RPC("player1heal", RpcTarget.All);
+            playhealattack( player1Prefab, attackID);
+        }
+        else if (state == FightState.PLAYERTWOTURN)
+        {
+            photonView.RPC("player2heal", RpcTarget.All);
+            playhealattack(player2Prefab, attackID);
+        }
+    }
+    [PunRPC]
+    public void player1heal()
+    {
+        player1Prefab.currentHealth += 10;
+        player1Prefab.currentMana -= 20;
+       player1health.value = player1Prefab.currentHealth;
+        player1mana.value = player1Prefab.currentMana;
+        state = FightState.PLAYERTWOTURN;
+        PlayerTwoTurn();
+    }
+    [PunRPC]
+    public void player2heal()
+    {
+        
+        player2Prefab.currentHealth += 10;
+        player2Prefab.currentMana -= 20;
+        player2health.value = player2Prefab.currentHealth;
+        player2mana.value = player2Prefab.currentMana;
+        state = FightState.PLAYERONETURN;
+        PlayerOneTurn();
+    }
+    public void playhealattack(Fighter player, int attackID)
+    {
+        string animToplay = player.figherAttackSet.getAttack(attackID).getName();
+        Animationcontroller = FindObjectOfType<AnimationDatabase>();
+        Animationcontroller.playAnim(animToplay);
+    }
     [PunRPC]
     public void playerAttack(int playeri, int attackID)
     {
