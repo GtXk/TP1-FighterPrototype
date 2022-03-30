@@ -128,7 +128,10 @@ public class Fighter : MonoBehaviourPun
 
             if (CounterElement(anyAttack) == true)
             {
-                currentHealth -= (attack * 2) + damageboost;
+                float temp = (float)(attack * 1.5);
+                //Mathf.RoundToInt(temp)
+                currentHealth -= Mathf.RoundToInt(temp) + damageboost;
+                Debug.LogError("the temp value is " + temp);
 
                 // photonView.RPC("elemntaldamage", RpcTarget.Others, attack);
 
